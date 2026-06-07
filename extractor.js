@@ -100,12 +100,32 @@
                 const perks = [];
                 const blessings = [];
 
-                const knownBlessings = [
-                    'Hammerblow',
-                    'Falter',
-                    'Punishing Salvo',
-                    'Powderburn'
-                ];
+		const blessingNodes = [
+		    ...card.querySelectorAll('h3')
+		];
+
+		blessingNodes.forEach(h3 => {
+
+			const name = cleanText(
+			    h3.innerText
+			);
+
+		        const description = cleanText(
+		            h3.parentElement
+		            ?.querySelector('p')
+		            ?.innerText
+			);
+
+			if (name) {
+
+			        blessings.push({
+			        name,
+			        description: description || ''
+			        });
+
+			}
+
+		});
 
                 for (let i = 0; i < lines.length; i++) {
 
@@ -127,32 +147,6 @@
                             'Stopping Power',
                             'Stability'
                         ].includes(line)
-                    ) {
-                        continue;
-                    }
-
-                    /*
-                        Blessings
-                    */
-
-                    if (knownBlessings.includes(line)) {
-
-                        blessings.push({
-                            name: line,
-                            description: lines[i + 1] || ''
-                        });
-
-                        continue;
-                    }
-
-                    /*
-                        Skip blessing descriptions
-                    */
-
-                    if (
-                        blessings.some(
-                            b => b.description === line
-                        )
                     ) {
                         continue;
                     }
