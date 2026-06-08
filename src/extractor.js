@@ -212,8 +212,6 @@ function extractBuild(document) {
 
     console.log("=== Extraction Complete ===");
 
-    console.log(build);
-
     console.log(
         JSON.stringify(build, null, 2)
     );
