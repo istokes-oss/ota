@@ -1,0 +1,3 @@
+summary: Validate Arbites fixture
+
+test: ./run.sh
