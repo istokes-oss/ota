@@ -19,6 +19,12 @@ function extractBuild(document) {
             ?.replace(/\s+/g, ' ')
             ?.trim();
 
+    const getText = node =>
+        cleanText(
+            node?.textContent
+    );
+
+
     /*
         TALENTS (active only)
     */
@@ -60,7 +66,7 @@ function extractBuild(document) {
         build.weapons = weaponCards
             .map(card => {
 
-                const lines = card.innerText
+                const lines = card.textContent
                     .split('\n')
                     .map(cleanText)
                     .filter(Boolean);
@@ -95,14 +101,13 @@ function extractBuild(document) {
 
 		blessingNodes.forEach(h3 => {
 
-			const name = cleanText(
-			    h3.innerText
+			const name = getText(
+			    h3
 			);
 
-		        const description = cleanText(
+		        const description = getText(
 		            h3.parentElement
 		            ?.querySelector('p')
-		            ?.innerText
 			);
 
 			if (name) {
@@ -123,10 +128,10 @@ function extractBuild(document) {
 		    )
 		]
 		.map(node =>
-		    cleanText(
+		    getText(
 		        node.querySelector(
 		            '.text-\\[\\#D1FFC3\\].font-bold.text-sm'
-		        )?.innerText
+		        )
 		    )
 		)
 		.filter(Boolean);
@@ -165,8 +170,8 @@ function extractBuild(document) {
 
 	    build.curios = curioCards.map(card => {
 
-        	const primary = cleanText(
-	            card.querySelector('h3')?.innerText
+        	const primary = getText(
+	            card.querySelector('h3')
 	        );
 
         	const perks = [
@@ -175,10 +180,10 @@ function extractBuild(document) {
 	            )
         	]
 	        .map(node =>
-        	    cleanText(
+        	    getText(
 	                node.querySelector(
         	            '.text-\\[\\#D1FFC3\\].text-sm.leading-4'
-	                )?.innerText
+	                )
 	            )
 	        )
 	        .filter(Boolean);
