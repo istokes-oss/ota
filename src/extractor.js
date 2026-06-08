@@ -1,4 +1,4 @@
-(() => {
+function extractBuild(document) {
 
     console.log("=== Darktide Build Exporter ===");
 
@@ -215,4 +215,8 @@
 
     return build;
 
-})();
+}
+
+module.exports = {
+    extractBuild
+};
