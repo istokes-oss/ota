@@ -2,7 +2,7 @@
 
 ## Validation Date
 
-2026-06-07
+2026-06-08
 
 ## Classes Validated
 
@@ -62,6 +62,41 @@ Observed layout:
 Card 0 -> View more <Class> builds
 Card 1 -> Weapon 1
 Card 2 -> Weapon 2
+```
+
+Status:
+
+PASS
+
+---
+
+## Perk Structure
+
+Within weapon cards:
+
+```html
+<div class="flex gap-8 items-center py-2 px-6">
+    <div class="w-1.5 h-1.5 bg-[#D1FFC3] rotate-45"></div>
+    <div class="text-[#D1FFC3] font-bold text-sm">
+        Perk Text
+    </div>
+</div>
+```
+
+Extraction:
+
+```javascript
+card.querySelectorAll(
+    '.flex.gap-8.items-center.py-2.px-6'
+)
+```
+
+Perk value:
+
+```javascript
+node.querySelector(
+    '.text-\\[\\#D1FFC3\\].font-bold.text-sm'
+)
 ```
 
 Status:
@@ -141,6 +176,64 @@ PASS
 
 ---
 
+## Curio Structure
+
+Curio section anchor:
+
+```html
+<div id="curios">
+```
+
+Curio container:
+
+```javascript
+document.getElementById('curios')
+    ?.nextElementSibling
+```
+
+Curio cards:
+
+```javascript
+curiosContainer.children
+```
+
+Observed layout:
+
+```text
+Curio Card
+├── Name
+├── Rarity
+├── Primary Stat
+└── 3 Secondary Perks
+```
+
+Primary stat:
+
+```javascript
+card.querySelector('h3')
+```
+
+Example:
+
+```text
++1 Wound(s)
++1-3 Max Stamina
+```
+
+Secondary perks:
+
+```javascript
+card.querySelectorAll(
+    '.flex.gap-8.items-center.py-2.px-6.h-10'
+)
+```
+
+Status:
+
+PASS
+
+---
+
 ## Incorrect Assumptions
 
 ### Blessing Containers
@@ -162,43 +255,68 @@ Matches:
 
 Should not be used as a blessing selector.
 
+### Perk Detection
+
+Initial assumption:
+
+```javascript
+line.includes('Damage')
+line.includes('Weak Spot')
+```
+
+Finding:
+
+FALSE
+
+Blessing descriptions can contain the same text.
+
+Structural extraction is required.
+
+---
+
+## Validation Summary
+
+Validated Successfully:
+
+- Talent extraction
+- Weapon identification
+- Perk extraction
+- Blessing extraction
+- Curio extraction
+- Partial talent trees
+- Full talent trees
+- Hive Scum talent tree
+- All currently released classes
+
+Status:
+
+PASS
+
 ---
 
 ## Outstanding Work
 
-### Blessing Refactor
+### Weapon Name Extraction
 
-Replace:
+Current extraction:
 
 ```javascript
-const knownBlessings = [...]
+const name = lines[0];
 ```
 
-with structural extraction.
+Potential future improvement:
+
+DOM-based extraction.
 
 Status:
 
-READY
-
-### Perk Extraction
-
-Current extraction remains heuristic based.
-
-Status:
-
-PENDING
-
-### Curio Extraction
-
-Current extraction remains text based.
-
-Status:
-
-PENDING
+LOW PRIORITY
 
 ### Hive Scum Stimm Lab
 
-Not yet investigated.
+Talent extraction functions correctly.
+
+Additional Stimm Lab specific extraction has not yet been investigated.
 
 Status:
 

@@ -155,43 +155,47 @@
 
     try {
 
-        const allLines = document.body.innerText
-            .split('\n')
-            .map(cleanText)
-            .filter(Boolean);
+    	const curiosContainer =
+        	document.getElementById('curios')
+	        ?.nextElementSibling;
 
-        const curiosStart = allLines.indexOf("Curios");
+	    const curioCards = [
+        	...(curiosContainer?.children || [])
+	    ];
 
-        if (curiosStart !== -1) {
+	    build.curios = curioCards.map(card => {
 
-            const curiosLines = allLines
-                .slice(curiosStart + 1);
+        	const primary = cleanText(
+	            card.querySelector('h3')?.innerText
+	        );
 
-            build.curios = unique(
-                curiosLines.filter(line => {
+        	const perks = [
+	            ...card.querySelectorAll(
+        	        '.flex.gap-8.items-center.py-2.px-6.h-10'
+	            )
+        	]
+	        .map(node =>
+        	    cleanText(
+	                node.querySelector(
+        	            '.text-\\[\\#D1FFC3\\].text-sm.leading-4'
+	                )?.innerText
+	            )
+	        )
+	        .filter(Boolean);
 
-                    return (
-                        (
-                            line.includes("%") &&
-                            (
-                                line.includes("Resistance") ||
-                                line.includes("Regeneration") ||
-                                line.includes("Toughness")
-                            )
-                        ) ||
-                        line.includes("Wound") ||
-                        line.includes("Stamina") ||
-                        line.includes("Corruption")
-                    );
+	        return {
+	            primary,
+	            perks
+	        };
 
-                })
-            );
+	    });
 
-        }
+	} catch (error) {
 
-    } catch (error) {
-
-        console.error("Curio extraction failed:", error);
+	    console.error(
+	        "Curio extraction failed:",
+	        error
+	    );
 
     }
 
