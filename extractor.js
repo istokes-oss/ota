@@ -20,16 +20,6 @@
             ?.trim();
 
     /*
-        Generic weapon stat pattern:
-        [76/80]%
-        [52/80]%
-        etc.
-    */
-
-    const isWeaponStat = line =>
-        /^\[\d+\/\d+\]%$/.test(line);
-
-    /*
         TALENTS (active only)
     */
 
@@ -97,7 +87,6 @@
                     return null;
                 }
 
-                const perks = [];
                 const blessings = [];
 
 		const blessingNodes = [
@@ -127,44 +116,21 @@
 
 		});
 
-                for (let i = 0; i < lines.length; i++) {
 
-                    const line = lines[i];
+		const perks = [
+		    ...card.querySelectorAll(
+		        '.flex.gap-8.items-center.py-2.px-6'
+		    )
+		]
+		.map(node =>
+		    cleanText(
+		        node.querySelector(
+		            '.text-\\[\\#D1FFC3\\].font-bold.text-sm'
+		        )?.innerText
+		    )
+		)
+		.filter(Boolean);
 
-                    /*
-                        Ignore weapon stat blocks
-                    */
-
-                    if (
-                        isWeaponStat(line) ||
-                        [
-                            'Penetration',
-                            'Finesse',
-                            'Crowd Control',
-                            'Damage',
-                            'Mobility',
-                            'Ammo',
-                            'Stopping Power',
-                            'Stability'
-                        ].includes(line)
-                    ) {
-                        continue;
-                    }
-
-                    /*
-                        Perks
-                    */
-
-                    if (
-                        line.includes('Damage') ||
-                        line.includes('Weak Spot')
-                    ) {
-
-                        perks.push(line);
-
-                    }
-
-                }
 
                 return {
                     name,
